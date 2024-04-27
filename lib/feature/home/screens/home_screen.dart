@@ -26,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
               20.heightBox,
               'Item categories'.text.bold.size(20).make(),
               20.heightBox,
+              //! Category Items
               SizedBox(
                 height: 60,
                 child: ListView(
@@ -54,6 +55,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
+              ),
+              30.heightBox,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  'Recent posts'.text.bold.size(20).make(),
+                  'See more'.text.color(Colors.grey).size(16).make(),
+                ],
               )
             ],
           ).pSymmetric(h: 5.w, v: 5.w),

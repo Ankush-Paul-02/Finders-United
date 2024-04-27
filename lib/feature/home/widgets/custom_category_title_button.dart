@@ -14,7 +14,7 @@ class CustomCategoryTitleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 30.w,
@@ -31,7 +31,7 @@ class CustomCategoryTitleButton extends StatelessWidget {
             ],
           ),
         ),
-        child: category.text.semiBold.size(18).white.makeCentered(),
+        child: category.text.bodyText1(context).size(18).white.makeCentered(),
       ),
     );
   }
