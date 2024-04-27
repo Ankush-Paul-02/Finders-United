@@ -3,7 +3,7 @@ import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../home/screens/home_screen.dart';
+import '../../home/screens/home.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const HomeScreen(),
+                            builder: (context) => const Home(),
                           )),
                       child: const Icon(
                         Icons.arrow_forward,

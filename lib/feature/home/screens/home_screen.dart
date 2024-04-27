@@ -4,6 +4,7 @@ import 'package:velocity_x/velocity_x.dart';
 
 import '../widgets/custom_category_title_button.dart';
 import '../widgets/home_header.dart';
+import '../widgets/recent_post_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,59 +16,63 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const HomeHeader(),
-              20.heightBox,
-              'Item categories'.text.bold.size(20).make(),
-              20.heightBox,
-              //! Category Items
-              SizedBox(
-                height: 60,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  children: [
-                    CustomCategoryTitleButton(
-                      category: 'All',
-                      onTap: () {},
-                    ),
-                    CustomCategoryTitleButton(
-                      category: 'Wallet',
-                      onTap: () {},
-                    ),
-                    CustomCategoryTitleButton(
-                      category: 'Watch',
-                      onTap: () {},
-                    ),
-                    CustomCategoryTitleButton(
-                      category: 'Aadhaar',
-                      onTap: () {},
-                    ),
-                    CustomCategoryTitleButton(
-                      category: 'Pan Card',
-                      onTap: () {},
-                    ),
-                  ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const HomeHeader(),
+          20.heightBox,
+          'Item categories'.text.bold.size(20).make(),
+          20.heightBox,
+
+          /// Category Items
+          SizedBox(
+            height: 60,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              children: [
+                CustomCategoryTitleButton(
+                  category: 'All',
+                  onTap: () {},
                 ),
-              ),
-              30.heightBox,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  'Recent posts'.text.bold.size(20).make(),
-                  'See more'.text.color(Colors.grey).size(16).make(),
-                ],
-              )
+                CustomCategoryTitleButton(
+                  category: 'Wallet',
+                  onTap: () {},
+                ),
+                CustomCategoryTitleButton(
+                  category: 'Watch',
+                  onTap: () {},
+                ),
+                CustomCategoryTitleButton(
+                  category: 'Aadhaar',
+                  onTap: () {},
+                ),
+                CustomCategoryTitleButton(
+                  category: 'Pan Card',
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
+          30.heightBox,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              'Recent posts'.text.bold.size(20).make(),
+              'See more'.text.color(Colors.grey).size(16).make(),
             ],
-          ).pSymmetric(h: 5.w, v: 5.w),
-        ),
-      ),
+          ),
+          20.heightBox,
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              RecentPostCard(),
+              RecentPostCard(),
+            ],
+          ),
+        ],
+      ).pSymmetric(h: 5.w, v: 5.w),
     );
   }
 }
