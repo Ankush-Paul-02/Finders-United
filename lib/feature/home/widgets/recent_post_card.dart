@@ -1,9 +1,15 @@
+import 'package:finders_united/feature/item/screens/item_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class RecentPostCard extends StatelessWidget {
-  const RecentPostCard({super.key});
+  final String postId;
+
+  const RecentPostCard({
+    super.key,
+    required this.postId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +37,23 @@ class RecentPostCard extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Colors.cyan,
-              image: const DecorationImage(
-                image: NetworkImage(
-                  'https://images.unsplash.com/photo-1579014134953-1580d7f123f3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2FsbGV0fGVufDB8fDB8fHww',
+            ),
+            child: GestureDetector(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ItemScreen(postId: postId),
                 ),
-                fit: BoxFit.cover,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Hero(
+                  tag: 'recent post $postId',
+                  child: Image.network(
+                    'https://images.unsplash.com/photo-1579014134953-1580d7f123f3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2FsbGV0fGVufDB8fDB8fHww',
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
           ),
@@ -59,7 +77,7 @@ class RecentPostCard extends StatelessWidget {
                     .make(),
               ),
             ],
-          )
+          ),
         ],
       ).pSymmetric(h: 2.w, v: 2.w),
     );

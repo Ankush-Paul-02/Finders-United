@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "814862433245",
+    "project_id": "finders-united",
+    "storage_bucket": "finders-united.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:814862433245:android:0f3359317f680077ae1434",
+        "android_client_info": {
+          "package_name": "com.devmare.finders_united"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGb7-WBhyp3BZnq4v5uH0RvQmvq9jZBLE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

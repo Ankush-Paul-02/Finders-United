@@ -1,8 +1,10 @@
-import 'package:finders_united/feature/home/provider/bottom_nav_bar_provider.dart';
-import 'package:finders_united/feature/home/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../chat/screens/chat_screen.dart';
+import '../provider/bottom_nav_bar_provider.dart';
+import 'home_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -14,14 +16,15 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<Widget> pages = [
     const HomeScreen(),
-    Container(color: Colors.green),
+    const ChatScreen(),
     Container(color: Colors.pink),
     Container(color: Colors.orange),
   ];
 
   @override
   Widget build(BuildContext context) {
-    final bottomNavProvider = Provider.of<BottomNavBarProvider>(context);
+    final bottomNavProvider =
+        Provider.of<BottomNavBarProvider>(context, listen: true);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,

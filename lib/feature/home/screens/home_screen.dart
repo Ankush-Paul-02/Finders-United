@@ -67,8 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              RecentPostCard(),
-              RecentPostCard(),
+              RecentPostCard(postId: '1'),
+              RecentPostCard(postId: '2'),
             ],
           ),
         ],
