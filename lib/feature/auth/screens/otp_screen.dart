@@ -101,16 +101,13 @@ class _OTPScreenState extends State<OTPScreen> {
                         validator: (s) {
                           return null;
                         },
+                        androidSmsAutofillMethod:
+                            AndroidSmsAutofillMethod.smsRetrieverApi,
                         length: 6,
                         keyboardType: TextInputType.number,
                         pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                         showCursor: true,
-                        onCompleted: (pin) {
-                          debugPrint('Code: $pin');
-                          debugPrint(
-                              'Controller: ${_otpController.text.trim()}');
-                          verifyOTP(state);
-                        },
+                        onCompleted: (pin) => verifyOTP(state),
                       )
                     ],
                   ).pSymmetric(h: 5.w),
