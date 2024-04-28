@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pinput/pinput.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../providers/auth_provider.dart';
+
 class OTPScreen extends StatefulWidget {
   final String phoneNumber;
+  final String verificationId;
 
   const OTPScreen({
     super.key,
     required this.phoneNumber,
+    required this.verificationId,
   });
 
   @override
@@ -17,6 +22,21 @@ class OTPScreen extends StatefulWidget {
 }
 
 class _OTPScreenState extends State<OTPScreen> {
+  final _otpController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _otpController.dispose();
+  }
+
+  Future<void> verifyOTP(AuthProvider authProvider) async {
+    authProvider.verifyOTP(
+      otp: _otpController.text.trim(),
+      context: context,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
@@ -44,43 +64,57 @@ class _OTPScreenState extends State<OTPScreen> {
       ),
     );
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          leading: const Icon(Icons.arrow_back).onTap(
-            () => Navigator.pop(context),
+      child: Consumer<AuthProvider>(
+        builder: (context, state, child) => Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            leading: const Icon(Icons.arrow_back).onTap(
+              () => Navigator.pop(context),
+            ),
           ),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              5.h.heightBox,
-              Lottie.asset('assets/animation/search.json'),
-              20.heightBox,
-              'Verification Code'.text.black.bold.size(22).make(),
-              5.heightBox,
-              'We have sent the verification code\nto your phone number ${widget.phoneNumber}'
-                  .text
-                  .size(16)
-                  .gray500
-                  .make(),
-              20.heightBox,
-              Pinput(
-                defaultPinTheme: defaultPinTheme,
-                focusedPinTheme: focusedPinTheme,
-                submittedPinTheme: submittedPinTheme,
-                validator: (s) {
-                  return s == '222222' ? null : 'Code is incorrect';
-                },
-                length: 6,
-                keyboardType: TextInputType.number,
-                pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
-                showCursor: true,
-                onCompleted: (pin) => debugPrint('Code: $pin'),
-              )
-            ],
-          ).pSymmetric(h: 5.w),
+          body: state.isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.cyan,
+                  ),
+                )
+              : SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      5.h.heightBox,
+                      Lottie.asset('assets/animation/search.json'),
+                      20.heightBox,
+                      'Verification Code'.text.black.bold.size(22).make(),
+                      5.heightBox,
+                      'We have sent the verification code\nto your phone number ${widget.phoneNumber}'
+                          .text
+                          .size(16)
+                          .gray500
+                          .make(),
+                      20.heightBox,
+                      Pinput(
+                        controller: _otpController,
+                        defaultPinTheme: defaultPinTheme,
+                        focusedPinTheme: focusedPinTheme,
+                        submittedPinTheme: submittedPinTheme,
+                        validator: (s) {
+                          return null;
+                        },
+                        length: 6,
+                        keyboardType: TextInputType.number,
+                        pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                        showCursor: true,
+                        onCompleted: (pin) {
+                          debugPrint('Code: $pin');
+                          debugPrint(
+                              'Controller: ${_otpController.text.trim()}');
+                          verifyOTP(state);
+                        },
+                      )
+                    ],
+                  ).pSymmetric(h: 5.w),
+                ),
         ),
       ),
     );

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../auth/screens/login_screen.dart';
-
 class HomeHeader extends StatefulWidget {
   const HomeHeader({super.key});
 
@@ -37,12 +35,9 @@ class _HomeHeaderState extends State<HomeHeader> {
               'FindersUnited'.text.white.size(20).make(),
               const Spacer(),
               GestureDetector(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginScreen(),
-                  ),
-                ),
+                onTap: () {
+                  debugPrint('Logging out...');
+                },
                 child: const CircleAvatar(
                   backgroundImage: NetworkImage(
                     'https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D',
