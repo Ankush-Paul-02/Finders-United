@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../chat/screens/chat_screen.dart';
+import '../../profile/screens/profile_screen.dart';
 import '../provider/bottom_nav_bar_provider.dart';
 import 'home_screen.dart';
 
@@ -18,7 +19,7 @@ class _HomeState extends State<Home> {
     const HomeScreen(),
     const ChatScreen(),
     Container(color: Colors.pink),
-    Container(color: Colors.orange),
+    const ProfileScreen(),
   ];
 
   @override

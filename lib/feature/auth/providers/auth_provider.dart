@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/utils/show_snack_bar.dart';
 import '../../home/screens/home.dart';
 import '../models/user_model.dart';
 import '../screens/login_screen.dart';
@@ -10,6 +14,7 @@ import '../screens/otp_screen.dart';
 class AuthProvider with ChangeNotifier {
   final _firebaseAuth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
+  final _storage = FirebaseStorage.instance;
 
   String _verificationId = "";
   bool _isLoading = false;
@@ -20,6 +25,27 @@ class AuthProvider with ChangeNotifier {
 
   /// GET USER WHEN USER IS LOGGED IN
   User get user => _firebaseAuth.currentUser!;
+
+  /// GET USER DATA
+  Future<UserModel?> getUserData(String userId) async {
+    try {
+      // Access Firestore and retrieve user data using the userId
+      DocumentSnapshot<Map<String, dynamic>> snapshot =
+          await _firestore.collection('users').doc(userId).get();
+
+      if (snapshot.exists) {
+        // Populate UserModel with fetched data
+        return UserModel.fromMap(snapshot.data()!);
+      } else {
+        // User document does not exist
+        return null;
+      }
+    } catch (e) {
+      // Handle errors
+      debugPrint('Error fetching user data: $e');
+      return null;
+    }
+  }
 
   /// Method to send OTP
   Future<void> sendOTP({
@@ -107,6 +133,54 @@ class AuthProvider with ChangeNotifier {
           .set(userModel.toMap());
       snapshot =
           await _firestore.collection('users').doc(firebaseUser.uid).get();
+    } else {
+      UserModel userModel =
+          UserModel.fromMap(snapshot.data() as Map<String, dynamic>);
+      await _firestore
+          .collection('users')
+          .doc(firebaseUser.uid)
+          .update(userModel.toMap());
+    }
+  }
+
+  /// Update user
+  Future<void> updateUser(
+    UserModel updatedUserModel,
+    BuildContext context,
+    File? imageFile,
+  ) async {
+    try {
+      _setLoading(true);
+      var firebaseUser = _firebaseAuth.currentUser;
+
+      if (firebaseUser != null) {
+        String? imageUrl;
+        if (imageFile != null) {
+          // UNIQUE FILE NAME
+          String fileName =
+              '${firebaseUser.uid}_${DateTime.now().millisecondsSinceEpoch}';
+
+          /// CREATE A REFERENCE TO THE LOCATION IN FIREBASE STORAGE
+          Reference ref = _storage.ref().child('user_images/$fileName');
+
+          /// UPLOAD THE IMAGE TO FIREBASE STORAGE
+          UploadTask task = ref.putFile(imageFile);
+
+          /// GET THE DOWNLOAD URL
+          TaskSnapshot snapshot = await task;
+          imageUrl = await snapshot.ref.getDownloadURL();
+        }
+        updatedUserModel = updatedUserModel.copyWith(imageUrl: imageUrl);
+        await _firestore
+            .collection('users')
+            .doc(firebaseUser.uid)
+            .update(updatedUserModel.toMap());
+        showSnackBar(context, 'Profile updated successfully.');
+      }
+    } on FirebaseException catch (e) {
+      showSnackBar(context, 'Failed to update user. Please try again later.');
+    } finally {
+      _setLoading(false);
     }
   }
 

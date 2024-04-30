@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../../core/constants/app_constants.dart';
+import '../../auth/models/user_model.dart';
+
 class HomeHeader extends StatefulWidget {
-  const HomeHeader({super.key});
+  final UserModel user;
+
+  const HomeHeader({
+    super.key,
+    required this.user,
+  });
 
   @override
   State<HomeHeader> createState() => _HomeHeaderState();
@@ -38,10 +46,10 @@ class _HomeHeaderState extends State<HomeHeader> {
                 onTap: () {
                   debugPrint('Logging out...');
                 },
-                child: const CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    'https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D',
-                  ),
+                child: CircleAvatar(
+                  backgroundImage: widget.user.imageUrl == ""
+                      ? AssetImage(AppConstants.profileImage)
+                      : NetworkImage(widget.user.imageUrl) as ImageProvider,
                 ),
               ),
             ],

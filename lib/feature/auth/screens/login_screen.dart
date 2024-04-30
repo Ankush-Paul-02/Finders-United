@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../../core/common/black_gradient_button.dart';
 import '../providers/auth_provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -91,24 +92,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       20.heightBox,
-                      Container(
-                        height: 60,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: const LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Colors.black,
-                              Colors.grey,
-                            ],
-                          ),
-                        ),
+                      GestureDetector(
+                        onTap: () => sendOTP(context, state),
                         child:
-                            'SEND OTP'.text.white.bold.size(18).makeCentered(),
-                      ).onTap(
-                        () => sendOTP(context, state),
+                            const BlackGradientButton(buttonName: 'SEND OTP'),
                       ),
                     ],
                   ).pSymmetric(h: 5.w, v: 5.w),
