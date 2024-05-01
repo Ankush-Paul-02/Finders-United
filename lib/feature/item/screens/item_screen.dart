@@ -4,10 +4,12 @@ import 'package:velocity_x/velocity_x.dart';
 
 class ItemScreen extends StatefulWidget {
   final String postId;
+  final String imageUrl;
 
   const ItemScreen({
     super.key,
     required this.postId,
+    required this.imageUrl,
   });
 
   @override
@@ -33,7 +35,7 @@ class _ItemScreenState extends State<ItemScreen> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.network(
-                        'https://images.unsplash.com/photo-1579014134953-1580d7f123f3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2FsbGV0fGVufDB8fDB8fHww',
+                        widget.imageUrl,
                         fit: BoxFit.fill,
                       ),
                     ),

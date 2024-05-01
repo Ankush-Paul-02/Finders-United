@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../core/common/black_gradient_button.dart';
+import '../../../core/constants/app_constants.dart';
 import '../providers/auth_provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -57,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           .color(Colors.cyan)
                           .makeCentered(),
                       10.h.heightBox,
-                      Lottie.asset('assets/animation/search.json'),
+                      Lottie.asset(AppConstants.searchAnimation),
                       20.h.heightBox,
                       Container(
                         decoration: BoxDecoration(

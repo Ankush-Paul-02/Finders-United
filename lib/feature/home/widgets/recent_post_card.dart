@@ -5,10 +5,12 @@ import 'package:velocity_x/velocity_x.dart';
 
 class RecentPostCard extends StatelessWidget {
   final String postId;
+  final String imageUrl;
 
   const RecentPostCard({
     super.key,
     required this.postId,
+    required this.imageUrl,
   });
 
   @override
@@ -42,7 +44,10 @@ class RecentPostCard extends StatelessWidget {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ItemScreen(postId: postId),
+                  builder: (context) => ItemScreen(
+                    postId: postId,
+                    imageUrl: imageUrl,
+                  ),
                 ),
               ),
               child: ClipRRect(
@@ -50,7 +55,7 @@ class RecentPostCard extends StatelessWidget {
                 child: Hero(
                   tag: 'recent post $postId',
                   child: Image.network(
-                    'https://images.unsplash.com/photo-1579014134953-1580d7f123f3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2FsbGV0fGVufDB8fDB8fHww',
+                    imageUrl,
                     fit: BoxFit.cover,
                   ),
                 ),

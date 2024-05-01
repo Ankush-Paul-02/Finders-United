@@ -7,7 +7,7 @@ import 'package:sizer/sizer.dart';
 import 'feature/auth/providers/auth_provider.dart';
 import 'feature/auth/screens/login_screen.dart';
 import 'feature/home/provider/bottom_nav_bar_provider.dart';
-import 'feature/home/screens/home.dart';
+import 'feature/splash/screens/splash_screen.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -49,7 +49,9 @@ class MyApp extends StatelessWidget {
           home: Consumer<AuthProvider>(
             builder: (context, authProvider, child) {
               var isAuthenticated = authProvider.isAuthenticated();
-              return isAuthenticated ? const Home() : const LoginScreen();
+              return isAuthenticated
+                  ? const SplashScreen()
+                  : const LoginScreen();
             },
           ),
         ),

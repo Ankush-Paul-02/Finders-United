@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../../core/constants/app_constants.dart';
 import '../providers/auth_provider.dart';
 
 class OTPScreen extends StatefulWidget {
@@ -83,7 +84,7 @@ class _OTPScreenState extends State<OTPScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       5.h.heightBox,
-                      Lottie.asset('assets/animation/search.json'),
+                      Lottie.asset(AppConstants.searchAnimation),
                       20.heightBox,
                       'Verification Code'.text.black.bold.size(22).make(),
                       5.heightBox,

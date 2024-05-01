@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../chat/screens/chat_screen.dart';
 import '../../profile/screens/profile_screen.dart';
+import '../../upload/screens/found_item_upload_screen.dart';
 import '../provider/bottom_nav_bar_provider.dart';
 import 'home_screen.dart';
 
@@ -18,7 +19,8 @@ class _HomeState extends State<Home> {
   List<Widget> pages = [
     const HomeScreen(),
     const ChatScreen(),
-    Container(color: Colors.pink),
+    const FoundItemUploadScreen(),
+    Container(color: Colors.cyan),
     const ProfileScreen(),
   ];
 
@@ -46,6 +48,14 @@ class _HomeState extends State<Home> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.chat),
+              backgroundColor: Colors.white,
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.upload_rounded,
+                size: 48,
+              ),
               backgroundColor: Colors.white,
               label: '',
             ),

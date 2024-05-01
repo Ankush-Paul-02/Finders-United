@@ -3,6 +3,7 @@ import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../../core/constants/app_constants.dart';
 import '../../home/screens/home.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -24,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
             children: [
               'FindersUnited'.text.semiBold.black.size(20).make(),
               18.h.heightBox,
-              Lottie.asset('assets/animation/search.json'),
+              Lottie.asset(AppConstants.searchAnimation),
               40.heightBox,
               Container(
                 height: 40.h,
@@ -59,10 +60,11 @@ class _SplashScreenState extends State<SplashScreen> {
                         backgroundColor: Colors.cyan[200],
                       ),
                       onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Home(),
-                          )),
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Home(),
+                        ),
+                      ),
                       child: const Icon(
                         Icons.arrow_forward,
                         color: Colors.white,
