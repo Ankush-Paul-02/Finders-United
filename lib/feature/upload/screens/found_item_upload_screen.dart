@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -59,8 +60,9 @@ class _FoundItemUploadScreenState extends State<FoundItemUploadScreen> {
 
   /// PICK THE CURRENT LOCATION
   Future<void> getCurrentLocation() async {
+    await Permission.location.request();
+    LocationPermission permission = await Geolocator.checkPermission();
     try {
-      LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied ||
           permission == LocationPermission.deniedForever) {
         showSnackBar(context, 'Location Denied!');

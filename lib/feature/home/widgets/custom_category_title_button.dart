@@ -31,7 +31,12 @@ class CustomCategoryTitleButton extends StatelessWidget {
             ],
           ),
         ),
-        child: category.text.bodyText1(context).size(18).white.makeCentered(),
+        child: category.text
+            .bodyText1(context)
+            .size(18)
+            .white
+            .align(TextAlign.center)
+            .makeCentered(),
       ),
     );
   }

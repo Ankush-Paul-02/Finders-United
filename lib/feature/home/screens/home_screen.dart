@@ -1,9 +1,12 @@
+import 'package:finders_united/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../auth/providers/auth_provider.dart';
+import '../../upload/models/found_item_model.dart';
+import '../../upload/provider/upload_item_provider.dart';
 import '../widgets/custom_category_title_button.dart';
 import '../widgets/home_header.dart';
 import '../widgets/recent_post_card.dart';
@@ -18,6 +21,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final uploadItemProvider =
+        Provider.of<UploadItemProvider>(context, listen: false);
+
     return Consumer<AuthProvider>(
       builder: (context, authProvider, child) {
         return FutureBuilder(
@@ -51,28 +57,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
-                        children: [
-                          CustomCategoryTitleButton(
-                            category: 'All',
-                            onTap: () {},
-                          ),
-                          CustomCategoryTitleButton(
-                            category: 'Wallet',
-                            onTap: () {},
-                          ),
-                          CustomCategoryTitleButton(
-                            category: 'Watch',
-                            onTap: () {},
-                          ),
-                          CustomCategoryTitleButton(
-                            category: 'Aadhaar',
-                            onTap: () {},
-                          ),
-                          CustomCategoryTitleButton(
-                            category: 'Pan Card',
-                            onTap: () {},
-                          ),
-                        ],
+                        children: AppConstants.categories
+                            .map(
+                              (category) => CustomCategoryTitleButton(
+                                category: category,
+                                onTap: () {},
+                              ),
+                            )
+                            .toList(),
                       ),
                     ),
                     30.heightBox,
@@ -84,21 +76,32 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     20.heightBox,
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        RecentPostCard(
-                          postId: '1',
-                          imageUrl:
-                              'https://images.unsplash.com/photo-1579014134953-1580d7f123f3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2FsbGV0fGVufDB8fDB8fHww',
-                        ),
-                        RecentPostCard(
-                          postId: '2',
-                          imageUrl:
-                              'https://images.unsplash.com/photo-1539874754764-5a96559165b0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHdhdGNofGVufDB8fDB8fHww',
-                        ),
-                      ],
-                    ),
+                    FutureBuilder<List<FoundItemModel>>(
+                      future: uploadItemProvider.recentFoundItems(context),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child:
+                                CircularProgressIndicator(color: Colors.cyan),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          final recentItems = snapshot.data ?? [];
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: recentItems
+                                .map((item) => RecentPostCard(
+                                      postId: item.id,
+                                      imageUrl: item.imageUrl,
+                                      foundItemModel: item,
+                                    ))
+                                .toList(),
+                          );
+                        }
+                      },
+                    )
                   ],
                 ).pSymmetric(h: 5.w, v: 5.w),
               );

@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../../core/common/common_row_item_info.dart';
+import '../../upload/models/found_item_model.dart';
+
 class ItemScreen extends StatefulWidget {
   final String postId;
   final String imageUrl;
+  final FoundItemModel foundItemModel;
 
   const ItemScreen({
     super.key,
     required this.postId,
     required this.imageUrl,
+    required this.foundItemModel,
   });
 
   @override
@@ -21,95 +26,102 @@ class _ItemScreenState extends State<ItemScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Hero(
-                tag: 'recent post ${widget.postId}',
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                        widget.imageUrl,
-                        fit: BoxFit.fill,
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Hero(
+                  tag: 'recent post ${widget.postId}',
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          widget.imageUrl,
+                          fit: BoxFit.fill,
+                        ),
                       ),
-                    ),
-                    Positioned(
-                      top: 10,
-                      left: 10,
-                      child: GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: CircleAvatar(
-                          backgroundColor: Colors.white.withOpacity(0.4),
-                          child: const Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
+                      Positioned(
+                        top: 10,
+                        left: 10,
+                        child: GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white.withOpacity(0.4),
+                            child: const Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            20.heightBox,
-            'Brown Wallet'.text.bold.size(20).make(),
-            30.heightBox,
-            'Found at'.text.size(16).make(),
-            10.heightBox,
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.location_pin,
-                  color: Colors.cyan[200],
-                ),
-                10.widthBox,
-                Expanded(
-                  child: 'Sonarpur, Kolkata, 700150'
-                      .text
-                      .minFontSize(18)
-                      .cyan500
-                      .maxLines(1)
-                      .ellipsis
-                      .make(),
-                ),
-              ],
-            ),
-            30.heightBox,
-            'Found on'.text.size(16).make(),
-            10.heightBox,
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.access_time_filled_rounded,
-                  color: Colors.cyan[200],
-                ),
-                10.widthBox,
-                Expanded(
-                  child: '27 Apr 2024, 11:52 PM'
-                      .text
-                      .minFontSize(18)
-                      .cyan500
-                      .maxLines(1)
-                      .ellipsis
-                      .make(),
-                ),
-              ],
-            ),
-            30.heightBox,
-            'Description'.text.size(16).gray400.make(),
-            "A weathered leather wallet discovered on the roadside, containing potential clues to its owner's identity.This silent-relic of someone's journey awaits reunion with its rightful owner. If lost, please contact [your contact information] to reclaim."
-                .text
-                .make(),
-          ],
-        ).pSymmetric(h: 5.w, v: 5.w),
+              20.heightBox,
+
+              /// NAME
+              widget.foundItemModel.name.toString().text.bold.size(20).make(),
+              8.heightBox,
+
+              /// DESCRIPTION
+              'Description'.text.size(16).gray400.make(),
+              widget.foundItemModel.description.text.size(18).make(),
+              30.heightBox,
+              'Found at'.text.gray400.size(16).make(),
+              8.heightBox,
+
+              CustomRowItemDetail(
+                icon: Icons.location_on_rounded,
+                text: widget.foundItemModel.location,
+              ),
+              16.heightBox,
+
+              /// TIME
+              'Found on'.text.gray400.size(16).make(),
+              8.heightBox,
+              CustomRowItemDetail(
+                icon: Icons.calendar_month_rounded,
+                text: widget.foundItemModel.date,
+              ),
+              16.heightBox,
+
+              /// FOUND BY
+              'Found by'.text.size(16).gray400.make(),
+              8.heightBox,
+              CustomRowItemDetail(
+                icon: Icons.person_2_rounded,
+                text: widget.foundItemModel.founderName,
+              ),
+              16.heightBox,
+
+              /// CONTACT
+              'Contact info'.text.size(16).gray400.make(),
+              8.heightBox,
+              CustomRowItemDetail(
+                icon: Icons.phone_android_rounded,
+                text: widget.foundItemModel.founderContact,
+              ),
+              16.heightBox,
+
+              /// POSTED AT
+              'Posted at'.text.size(16).gray400.make(),
+              8.heightBox,
+              CustomRowItemDetail(
+                icon: Icons.calendar_month_rounded,
+                text:
+                    widget.foundItemModel.createdAt.toString().substring(0, 11),
+              ),
+              10.h.heightBox,
+            ],
+          ).pSymmetric(h: 5.w, v: 5.w),
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: Container(
           margin: EdgeInsets.symmetric(horizontal: 5.w),
@@ -121,8 +133,8 @@ class _ItemScreenState extends State<ItemScreen> {
               GestureDetector(
                 onTap: () => debugPrint('Bookmark item...'),
                 child: Container(
-                  height: 60,
-                  width: 60,
+                  height: 7.h,
+                  width: 7.h,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     gradient: LinearGradient(
@@ -139,7 +151,7 @@ class _ItemScreenState extends State<ItemScreen> {
               ),
               Expanded(
                 child: Container(
-                  height: 60,
+                  height: 7.h,
                   margin: const EdgeInsets.only(left: 20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),

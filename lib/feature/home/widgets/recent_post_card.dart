@@ -1,16 +1,20 @@
-import 'package:finders_united/feature/item/screens/item_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../item/screens/item_screen.dart';
+import '../../upload/models/found_item_model.dart';
+
 class RecentPostCard extends StatelessWidget {
   final String postId;
   final String imageUrl;
+  final FoundItemModel foundItemModel;
 
   const RecentPostCard({
     super.key,
     required this.postId,
     required this.imageUrl,
+    required this.foundItemModel,
   });
 
   @override
@@ -47,6 +51,7 @@ class RecentPostCard extends StatelessWidget {
                   builder: (context) => ItemScreen(
                     postId: postId,
                     imageUrl: imageUrl,
+                    foundItemModel: foundItemModel,
                   ),
                 ),
               ),
@@ -63,7 +68,12 @@ class RecentPostCard extends StatelessWidget {
             ),
           ),
           3.w.heightBox,
-          'Brown Wallet'.text.bold.size(14).make(),
+          foundItemModel.name.text.bold
+              .maxLines(1)
+              .ellipsis
+              .minFontSize(14)
+              .size(14)
+              .make(),
           1.w.heightBox,
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,8 +83,7 @@ class RecentPostCard extends StatelessWidget {
                 color: Colors.cyan[200],
               ),
               Expanded(
-                child: 'Sonarpur, Kolkata'
-                    .text
+                child: foundItemModel.location.text
                     .minFontSize(14)
                     .cyan500
                     .maxLines(1)
