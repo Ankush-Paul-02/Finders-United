@@ -18,22 +18,26 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Consumer<AuthProvider>(
-        builder: (context, authProvider, child) {
-          return FutureBuilder(
-            future: authProvider.getUserData(authProvider.user.uid),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Container();
-              } else if (snapshot.hasError) {
-                return 'Error'.text.makeCentered();
-              } else {
-                final user = snapshot.data;
-                if (user == null) {
-                  return 'No user found'.text.bold.size(22).makeCentered();
-                }
-                return Column(
+    return Consumer<AuthProvider>(
+      builder: (context, authProvider, child) {
+        return FutureBuilder(
+          future: authProvider.getUserData(authProvider.user.uid),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.cyan,
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return 'Error'.text.makeCentered();
+            } else {
+              final user = snapshot.data;
+              if (user == null) {
+                return 'No user found'.text.bold.size(22).makeCentered();
+              }
+              return SingleChildScrollView(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     HomeHeader(user: user),
@@ -96,12 +100,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ],
-                ).pSymmetric(h: 5.w, v: 5.w);
-              }
-            },
-          );
-        },
-      ),
+                ).pSymmetric(h: 5.w, v: 5.w),
+              );
+            }
+          },
+        );
+      },
     );
   }
 }

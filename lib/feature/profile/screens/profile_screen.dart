@@ -45,37 +45,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Consumer<AuthProvider>(
-        builder: (context, authProvider, child) {
-          return FutureBuilder(
-            future: authProvider.getUserData(authProvider.user.uid),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Container();
-              } else if (snapshot.hasError) {
-                return 'Error'.text.makeCentered();
-              } else {
-                final user = snapshot.data;
-                if (user == null) {
-                  return 'No user found'.text.bold.size(22).makeCentered();
-                }
-                return authProvider.isLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.cyan,
-                        ),
-                      )
-                    : Column(
+    return Consumer<AuthProvider>(
+      builder: (context, authProvider, child) {
+        return FutureBuilder(
+          future: authProvider.getUserData(authProvider.user.uid),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.cyan,
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return 'Error'.text.makeCentered();
+            } else {
+              final user = snapshot.data;
+              if (user == null) {
+                return 'No user found'.text.bold.size(22).makeCentered();
+              }
+              return authProvider.isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.cyan,
+                      ),
+                    )
+                  : SingleChildScrollView(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Center(
                             child: Stack(
                               children: [
                                 GestureDetector(
-                                  onTap: () {
-                                    getImageFromGallery();
-                                  },
+                                  onTap: () => getImageFromGallery(),
                                   child: CircleAvatar(
                                     radius: 25.w,
                                     backgroundImage: _image != null
@@ -143,12 +145,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                         ],
-                      ).pSymmetric(h: 5.w, v: 5.w);
-              }
-            },
-          );
-        },
-      ),
+                      ).pSymmetric(h: 5.w, v: 5.w),
+                    );
+            }
+          },
+        );
+      },
     );
   }
 }

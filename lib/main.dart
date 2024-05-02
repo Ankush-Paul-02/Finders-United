@@ -8,6 +8,7 @@ import 'feature/auth/providers/auth_provider.dart';
 import 'feature/auth/screens/login_screen.dart';
 import 'feature/home/provider/bottom_nav_bar_provider.dart';
 import 'feature/splash/screens/splash_screen.dart';
+import 'feature/upload/provider/upload_item_provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -31,6 +32,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (context) => AuthProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => UploadItemProvider(),
           ),
         ],
         child: MaterialApp(
