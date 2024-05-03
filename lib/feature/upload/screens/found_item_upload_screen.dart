@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -59,28 +58,46 @@ class _FoundItemUploadScreenState extends State<FoundItemUploadScreen> {
   }
 
   /// PICK THE CURRENT LOCATION
-  Future<void> getCurrentLocation() async {
-    await Permission.location.request();
-    LocationPermission permission = await Geolocator.checkPermission();
-    try {
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
-        showSnackBar(context, 'Location Denied!');
-        LocationPermission ask = await Geolocator.requestPermission();
-      } else {
-        Position currentPosition = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best,
-          forceAndroidLocationManager: true,
-        );
-        List<Placemark> placeMarks = await placemarkFromCoordinates(
-          currentPosition.latitude,
-          currentPosition.longitude,
-        );
-        setState(() {
-          _locationController.text =
-              '${placeMarks[0].name}, ${placeMarks[0].subLocality}, ${placeMarks[0].locality}, ${placeMarks[0].administrativeArea}, ${placeMarks[0].postalCode}';
-        });
+  Future<void> getCurrentLocation(BuildContext context) async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      showSnackBar(context, 'Location services are disabled.');
+      await Geolocator.requestPermission();
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        showSnackBar(context, 'Location permissions are permanently denied');
+        return;
       }
+      if (permission == LocationPermission.denied) {
+        showSnackBar(context, 'Location permissions are denied');
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      showSnackBar(context, 'Location permissions are permanently denied');
+      return;
+    }
+
+    try {
+      Position currentPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best,
+      );
+      List<Placemark> placeMarks = await placemarkFromCoordinates(
+        currentPosition.latitude,
+        currentPosition.longitude,
+      );
+      setState(() {
+        _locationController.text =
+            '${placeMarks[0].name}, ${placeMarks[0].subLocality}, ${placeMarks[0].locality}, ${placeMarks[0].administrativeArea}, ${placeMarks[0].postalCode}';
+      });
     } catch (e) {
       showSnackBar(context, 'Error getting location');
     }
@@ -288,7 +305,7 @@ class _FoundItemUploadScreenState extends State<FoundItemUploadScreen> {
                       child: TextField(
                         controller: _locationController,
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 5.w),
+                          contentPadding: EdgeInsets.only(top: 5.w),
                           fillColor: Colors.white,
                           filled: true,
                           hintText: 'Pick the location',
@@ -302,7 +319,7 @@ class _FoundItemUploadScreenState extends State<FoundItemUploadScreen> {
                         readOnly: true,
                         maxLines: 2,
                         onTap: () {
-                          getCurrentLocation();
+                          getCurrentLocation(context);
                         },
                       ),
                     ),
