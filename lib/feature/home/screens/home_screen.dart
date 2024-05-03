@@ -1,15 +1,16 @@
-import 'package:finders_united/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../../core/constants/app_constants.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../upload/models/found_item_model.dart';
 import '../../upload/provider/upload_item_provider.dart';
 import '../widgets/custom_category_title_button.dart';
 import '../widgets/home_header.dart';
 import '../widgets/recent_post_card.dart';
+import 'all_recent_items_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -71,8 +72,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        'Recent posts'.text.bold.size(20).make(),
-                        'See more'.text.color(Colors.grey).size(16).make(),
+                        'Recent items'.text.bold.size(20).make(),
+                        'See more'
+                            .text
+                            .color(Colors.grey)
+                            .size(16)
+                            .make()
+                            .onTap(
+                              () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => AllRecentItemsScreen(
+                                    uploadItemProvider: uploadItemProvider,
+                                  ),
+                                ),
+                              ),
+                            ),
                       ],
                     ),
                     20.heightBox,
@@ -89,9 +103,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           return Text('Error: ${snapshot.error}');
                         } else {
                           final recentItems = snapshot.data ?? [];
+                          final limitedRecentItems =
+                              recentItems.take(2).toList();
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: recentItems
+                            children: limitedRecentItems
                                 .map((item) => RecentPostCard(
                                       postId: item.id,
                                       imageUrl: item.imageUrl,
@@ -101,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         }
                       },
-                    )
+                    ),
                   ],
                 ).pSymmetric(h: 5.w, v: 5.w),
               );

@@ -41,9 +41,12 @@ class _ItemScreenState extends State<ItemScreen> {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: Image.network(
-                          widget.imageUrl,
-                          fit: BoxFit.fill,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Image.network(
+                            widget.imageUrl,
+                            fit: BoxFit.fill,
+                          ),
                         ),
                       ),
                       Positioned(
