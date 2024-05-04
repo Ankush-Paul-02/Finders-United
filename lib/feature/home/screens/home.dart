@@ -1,3 +1,4 @@
+import 'package:finders_united/feature/bookmark/screens/bookmark_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -16,12 +17,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Widget> pages = [
-    const HomeScreen(),
-    const ChatScreen(),
-    const FoundItemUploadScreen(),
-    Container(color: Colors.cyan),
-    const ProfileScreen(),
+  List<Widget> pages = const [
+    HomeScreen(),
+    ChatScreen(),
+    FoundItemUploadScreen(),
+    BookmarkScreen(),
+    ProfileScreen(),
   ];
 
   @override

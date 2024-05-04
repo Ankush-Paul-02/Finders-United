@@ -71,12 +71,12 @@ class _HomeHeaderState extends State<HomeHeader> {
                 color: Colors.grey,
               ),
             ),
-            trailing: [
+            /*trailing: [
               Icon(
                 Icons.filter_alt_rounded,
                 color: Colors.cyan[200],
               ),
-            ],
+            ],*/
           ),
         ],
       ).pSymmetric(h: 5.w, v: 5.w),
