@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class BlackGradientButton extends StatefulWidget {
+class GradientButton extends StatefulWidget {
   final String buttonName;
+  final List<Color>? colors;
 
-  const BlackGradientButton({
+  const GradientButton({
     super.key,
     required this.buttonName,
+    this.colors,
   });
 
   @override
-  State<BlackGradientButton> createState() => _BlackGradientButtonState();
+  State<GradientButton> createState() => _GradientButtonState();
 }
 
-class _BlackGradientButtonState extends State<BlackGradientButton> {
+class _GradientButtonState extends State<GradientButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,13 +23,14 @@ class _BlackGradientButtonState extends State<BlackGradientButton> {
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Colors.black,
-            Colors.grey,
-          ],
+          colors: widget.colors ??
+              [
+                Colors.black,
+                Colors.grey,
+              ],
         ),
       ),
       child: widget.buttonName.text.white.bold.size(18).makeCentered(),

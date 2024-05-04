@@ -52,6 +52,7 @@ dependencies:
   http: ^1.2.1
   geocoding: ^3.0.0
   uuid: ^4.4.0
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

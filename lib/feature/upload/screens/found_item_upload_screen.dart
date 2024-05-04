@@ -10,8 +10,8 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../../core/common/black_gradient_button.dart';
 import '../../../core/common/custom_text_field.dart';
+import '../../../core/common/gradient_button.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../provider/upload_item_provider.dart';
@@ -134,56 +134,62 @@ class _FoundItemUploadScreenState extends State<FoundItemUploadScreen> {
                     /// Image
                     'Image upload'.text.semiBold.size(20).make(),
                     20.heightBox,
-                    DottedBorder(
-                      borderType: BorderType.RRect,
-                      dashPattern: const [8, 6],
-                      color: Colors.cyan,
-                      strokeWidth: 2,
-                      strokeCap: StrokeCap.round,
-                      radius: const Radius.circular(12),
-                      child: ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(12)),
-                        child: _itemImage == null
-                            ? Container(
-                                height: 200,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Colors.cyan.withOpacity(0.1),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      height: 75,
-                                      width: 75,
-                                      child: Image.asset(
-                                        AppConstants.browseIcon,
-                                        color: Colors.cyan,
+                    SizedBox(
+                      width: double.infinity,
+                      child: DottedBorder(
+                        borderType: BorderType.RRect,
+                        dashPattern: const [8, 6],
+                        color: Colors.cyan,
+                        strokeWidth: 2,
+                        strokeCap: StrokeCap.round,
+                        radius: const Radius.circular(12),
+                        child: ClipRRect(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(12)),
+                          child: _itemImage == null
+                              ? Container(
+                                  height: 200,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: Colors.cyan.withOpacity(0.1),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: 75,
+                                        width: 75,
+                                        child: Image.asset(
+                                          AppConstants.browseIcon,
+                                          color: Colors.cyan,
+                                        ),
                                       ),
-                                    ),
-                                    8.heightBox,
-                                    ElevatedButton(
-                                      onPressed: () =>
-                                          getItemImageFromGallery(),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.cyan,
-                                        elevation: 1,
+                                      8.heightBox,
+                                      ElevatedButton(
+                                        onPressed: () =>
+                                            getItemImageFromGallery(),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.cyan,
+                                          elevation: 1,
+                                        ),
+                                        child: 'Browse'
+                                            .text
+                                            .size(16)
+                                            .white
+                                            .semiBold
+                                            .make(),
                                       ),
-                                      child: 'Browse'
-                                          .text
-                                          .size(16)
-                                          .white
-                                          .semiBold
-                                          .make(),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
+                                )
+                              : SizedBox(
+                                  width: double.infinity,
+                                  child: Image.file(
+                                    _itemImage!,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                              )
-                            : Image.file(
-                                _itemImage!,
-                                fit: BoxFit.cover,
-                              ),
+                        ),
                       ),
                     ),
 
@@ -369,7 +375,7 @@ class _FoundItemUploadScreenState extends State<FoundItemUploadScreen> {
                           }
                         }
                       },
-                      child: const BlackGradientButton(
+                      child: const GradientButton(
                         buttonName: 'UPLOAD',
                       ),
                     ),

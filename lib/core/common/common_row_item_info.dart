@@ -29,7 +29,7 @@ class _CustomRowItemDetailState extends State<CustomRowItemDetail> {
         Expanded(
           child: widget.text.text
               .minFontSize(18)
-              .cyan500
+              .black
               .maxLines(2)
               .ellipsis
               .make(),

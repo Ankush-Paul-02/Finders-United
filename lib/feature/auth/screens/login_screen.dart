@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../../core/common/black_gradient_button.dart';
+import '../../../core/common/gradient_button.dart';
 import '../../../core/constants/app_constants.dart';
 import '../providers/auth_provider.dart';
 
@@ -95,8 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       20.heightBox,
                       GestureDetector(
                         onTap: () => sendOTP(context, state),
-                        child:
-                            const BlackGradientButton(buttonName: 'SEND OTP'),
+                        child: const GradientButton(buttonName: 'SEND OTP'),
                       ),
                     ],
                   ).pSymmetric(h: 5.w, v: 5.w),

@@ -98,7 +98,10 @@ class FoundItemModel {
       founderId: map['founderId'] as String,
       founderName: map['founderName'] as String,
       founderContact: map['founderContact'] as String,
-      claimableIds: List<String>.from((map['claimableIds'] as List<String>)),
+      claimableIds: (map['claimableIds'] as List<dynamic>?)
+              ?.map((item) => item.toString())
+              .toList() ??
+          [],
       isClaimed: map['isClaimed'] as bool,
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
       claimerPersonId: map['claimerPersonId'] as String,

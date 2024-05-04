@@ -24,6 +24,7 @@ class _AllRecentItemsScreenState extends State<AllRecentItemsScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.white,
           elevation: 0,
           title: 'Recent Items'.text.make(),
         ),

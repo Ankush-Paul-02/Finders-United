@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/constants/database_constants.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../home/screens/home.dart';
 import '../models/user_model.dart';
@@ -18,8 +19,11 @@ class AuthProvider with ChangeNotifier {
 
   String _verificationId = "";
   bool _isLoading = false;
+  bool _isItemBookmarked = false;
 
   bool get isLoading => _isLoading;
+
+  bool get isItemBookmarked => _isItemBookmarked;
 
   bool isAuthenticated() => _firebaseAuth.currentUser != null;
 
@@ -30,8 +34,10 @@ class AuthProvider with ChangeNotifier {
   Future<UserModel?> getUserData(String userId) async {
     try {
       // Access Firestore and retrieve user data using the userId
-      DocumentSnapshot<Map<String, dynamic>> snapshot =
-          await _firestore.collection('users').doc(userId).get();
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore
+          .collection(DatabaseConstants.userFirestore)
+          .doc(userId)
+          .get();
 
       if (snapshot.exists) {
         // Populate UserModel with fetched data
@@ -40,7 +46,7 @@ class AuthProvider with ChangeNotifier {
         // User document does not exist
         return null;
       }
-    } catch (e) {
+    } on FirebaseException catch (e) {
       // Handle errors
       debugPrint('Error fetching user data: $e');
       return null;
@@ -94,19 +100,29 @@ class AuthProvider with ChangeNotifier {
         smsCode: otp,
       );
 
-      await _firebaseAuth.signInWithCredential(
-        credential,
-      );
-      saveUserData();
-      if (!context.mounted) {
-        return;
-      }
-      Navigator.pushAndRemoveUntil(
+      // Sign in with the provided credential
+      await _firebaseAuth.signInWithCredential(credential);
+
+      // Get the updated Firebase user
+      User? firebaseUser = _firebaseAuth.currentUser;
+
+      // Check if user is not null
+      if (firebaseUser != null) {
+        // Save user data in Firestore
+        await saveUserData();
+
+        // Navigate to Home screen
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
             builder: (context) => const Home(),
           ),
-          (route) => false);
+          (route) => false,
+        );
+      } else {
+        // Handle null user case
+        debugPrint("User is null after verification.");
+      }
     } on FirebaseAuthException catch (e) {
       debugPrint(e.toString());
     } finally {
@@ -118,26 +134,31 @@ class AuthProvider with ChangeNotifier {
   Future<void> saveUserData() async {
     var firebaseUser = _firebaseAuth.currentUser;
 
-    DocumentSnapshot snapshot =
-        await _firestore.collection('users').doc(firebaseUser!.uid).get();
+    DocumentSnapshot snapshot = await _firestore
+        .collection(DatabaseConstants.userFirestore)
+        .doc(firebaseUser!.uid)
+        .get();
     if (!snapshot.exists) {
       UserModel userModel = UserModel(
         id: firebaseUser.uid,
         name: '',
         phone: firebaseUser.phoneNumber!,
         imageUrl: '',
+        bookmarkItems: [],
       );
       _firestore
-          .collection('users')
+          .collection(DatabaseConstants.userFirestore)
           .doc(firebaseUser.uid)
           .set(userModel.toMap());
-      snapshot =
-          await _firestore.collection('users').doc(firebaseUser.uid).get();
+      snapshot = await _firestore
+          .collection(DatabaseConstants.userFirestore)
+          .doc(firebaseUser.uid)
+          .get();
     } else {
       UserModel userModel =
           UserModel.fromMap(snapshot.data() as Map<String, dynamic>);
       await _firestore
-          .collection('users')
+          .collection(DatabaseConstants.userFirestore)
           .doc(firebaseUser.uid)
           .update(userModel.toMap());
     }
@@ -161,7 +182,9 @@ class AuthProvider with ChangeNotifier {
               '${firebaseUser.uid}_${DateTime.now().millisecondsSinceEpoch}';
 
           /// CREATE A REFERENCE TO THE LOCATION IN FIREBASE STORAGE
-          Reference ref = _storage.ref().child('user_images/$fileName');
+          Reference ref = _storage
+              .ref()
+              .child('${DatabaseConstants.userImagesStorage}/$fileName');
 
           /// UPLOAD THE IMAGE TO FIREBASE STORAGE
           UploadTask task = ref.putFile(imageFile);
@@ -172,7 +195,7 @@ class AuthProvider with ChangeNotifier {
         }
         updatedUserModel = updatedUserModel.copyWith(imageUrl: imageUrl);
         await _firestore
-            .collection('users')
+            .collection(DatabaseConstants.userFirestore)
             .doc(firebaseUser.uid)
             .update(updatedUserModel.toMap());
         showSnackBar(context, 'Profile updated successfully.');
@@ -181,6 +204,45 @@ class AuthProvider with ChangeNotifier {
       showSnackBar(context, 'Failed to update user. Please try again later.');
     } finally {
       _setLoading(false);
+    }
+  }
+
+  Future<void> toggleBookmarkItem(
+    String itemId,
+    BuildContext context,
+  ) async {
+    try {
+      var currentUser = _firebaseAuth.currentUser;
+      if (currentUser != null) {
+        DocumentSnapshot snapshot = await _firestore
+            .collection(DatabaseConstants.userFirestore)
+            .doc(currentUser.uid)
+            .get();
+        if (snapshot.exists) {
+          UserModel userModel = UserModel.fromMap(
+            snapshot.data() as Map<String, dynamic>,
+          );
+
+          if (userModel.bookmarkItems.contains(itemId)) {
+            userModel.bookmarkItems.remove(itemId);
+            _isItemBookmarked = false;
+            notifyListeners();
+          } else {
+            userModel.bookmarkItems.add(itemId);
+            _isItemBookmarked = true;
+            notifyListeners();
+          }
+
+          await _firestore
+              .collection(DatabaseConstants.userFirestore)
+              .doc(currentUser.uid)
+              .update(userModel.toMap());
+        }
+      } else {
+        showSnackBar(context, 'Current user does not exist.');
+      }
+    } on FirebaseException catch (e) {
+      showSnackBar(context, 'Something went wrong!');
     }
   }
 

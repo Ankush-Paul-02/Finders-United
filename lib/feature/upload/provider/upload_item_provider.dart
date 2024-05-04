@@ -17,8 +17,11 @@ class UploadItemProvider extends ChangeNotifier {
   final _storage = FirebaseStorage.instance;
 
   bool _isLoading = false;
+  bool _isItemRequestClaimed = false;
 
   bool get isLoading => _isLoading;
+
+  bool get isItemRequestClaimed => _isItemRequestClaimed;
 
   User get user => _firebaseAuth.currentUser!;
 
@@ -95,7 +98,9 @@ class UploadItemProvider extends ChangeNotifier {
   }
 
   /// GET THE RECENT ITEMS
-  Future<List<FoundItemModel>> recentFoundItems(BuildContext context) async {
+  Future<List<FoundItemModel>> recentFoundItems(
+    BuildContext context,
+  ) async {
     try {
       // _setLoading(true);
       CollectionReference reference =
@@ -127,6 +132,64 @@ class UploadItemProvider extends ChangeNotifier {
       return [];
     } finally {
       // _setLoading(false);
+    }
+  }
+
+  /// GET ITEM
+  Future<FoundItemModel?> getItem(String itemId) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore
+          .collection(DatabaseConstants.foundItemsFirestore)
+          .doc(itemId)
+          .get();
+      if (snapshot.exists) {
+        return FoundItemModel.fromMap(snapshot.data()!);
+      } else {
+        return null;
+      }
+    } on FirebaseException catch (e) {
+      debugPrint('Error fetching user data: $e');
+      return null;
+    }
+  }
+
+  Future<void> requestItemClaim(
+    String userId,
+    String itemId,
+    BuildContext context,
+  ) async {
+    try {
+      FoundItemModel? item = await getItem(itemId);
+      if (item != null) {
+        DocumentSnapshot snapshot = await _firestore
+            .collection(DatabaseConstants.foundItemsFirestore)
+            .doc(item.id)
+            .get();
+        if (snapshot.exists) {
+          FoundItemModel foundItemModel = FoundItemModel.fromMap(
+            snapshot.data() as Map<String, dynamic>,
+          );
+
+          if (foundItemModel.claimableIds.contains(userId)) {
+            foundItemModel.claimableIds.remove(userId);
+            _isItemRequestClaimed = false;
+            notifyListeners();
+          } else {
+            foundItemModel.claimableIds.add(userId);
+            _isItemRequestClaimed = true;
+            notifyListeners();
+          }
+
+          await _firestore
+              .collection(DatabaseConstants.foundItemsFirestore)
+              .doc(item.id)
+              .update(foundItemModel.toMap());
+        }
+      } else {
+        showSnackBar(context, 'Item does not exist.');
+      }
+    } on FirebaseException catch (e) {
+      showSnackBar(context, 'Something went wrong!');
     }
   }
 }

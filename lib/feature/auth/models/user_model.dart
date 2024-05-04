@@ -5,27 +5,15 @@ class UserModel {
   final String name;
   final String phone;
   final String imageUrl;
+  final List<String> bookmarkItems;
 
   UserModel({
     required this.id,
     required this.name,
     required this.phone,
     required this.imageUrl,
+    required this.bookmarkItems,
   });
-
-  UserModel copyWith({
-    String? id,
-    String? name,
-    String? phone,
-    String? imageUrl,
-  }) {
-    return UserModel(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      phone: phone ?? this.phone,
-      imageUrl: imageUrl ?? this.imageUrl,
-    );
-  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -33,6 +21,7 @@ class UserModel {
       'name': name,
       'phone': phone,
       'imageUrl': imageUrl,
+      'bookmarkItems': bookmarkItems,
     };
   }
 
@@ -42,6 +31,11 @@ class UserModel {
       name: map['name'] as String,
       phone: map['phone'] as String,
       imageUrl: map['imageUrl'] as String,
+      // Use null-aware operator to handle null case and default to empty list
+      bookmarkItems: (map['bookmarkItems'] as List<dynamic>?)
+              ?.map((item) => item.toString())
+              .toList() ??
+          [],
     );
   }
 
@@ -50,23 +44,19 @@ class UserModel {
   factory UserModel.fromJson(String source) =>
       UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  @override
-  String toString() {
-    return 'User(id: $id, name: $name, phone: $phone, imageUrl: $imageUrl)';
-  }
-
-  @override
-  bool operator ==(covariant UserModel other) {
-    if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.name == name &&
-        other.phone == phone &&
-        other.imageUrl == imageUrl;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^ name.hashCode ^ phone.hashCode ^ imageUrl.hashCode;
+  UserModel copyWith({
+    String? id,
+    String? name,
+    String? phone,
+    String? imageUrl,
+    List<String>? bookmarkItems,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+      imageUrl: imageUrl ?? this.imageUrl,
+      bookmarkItems: bookmarkItems ?? this.bookmarkItems,
+    );
   }
 }

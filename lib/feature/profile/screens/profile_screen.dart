@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../../core/common/black_gradient_button.dart';
+import '../../../core/common/gradient_button.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../auth/models/user_model.dart';
@@ -135,13 +135,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   imageUrl: _image != null
                                       ? _image!.path
                                       : user.imageUrl,
+                                  bookmarkItems: user.bookmarkItems,
                                 ),
                                 context,
                                 _image,
                               );
                             },
-                            child: const BlackGradientButton(
+                            child: const GradientButton(
                               buttonName: 'SAVE CHANGES',
+                            ),
+                          ),
+                          20.heightBox,
+                          GestureDetector(
+                            onTap: () => authProvider.logout(context: context),
+                            child: const GradientButton(
+                              buttonName: 'LOG OUT',
+                              colors: [
+                                Colors.red,
+                                Colors.white,
+                              ],
                             ),
                           ),
                         ],

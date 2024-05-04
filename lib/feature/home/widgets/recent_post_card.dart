@@ -42,7 +42,7 @@ class RecentPostCard extends StatelessWidget {
             height: 20.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Colors.cyan,
+              color: Colors.white,
             ),
             child: GestureDetector(
               onTap: () => Navigator.push(
