@@ -5,6 +5,7 @@ import 'package:velocity_x/velocity_x.dart';
 
 import '../../../core/constants/app_constants.dart';
 import '../../auth/providers/auth_provider.dart';
+import '../../item/screens/item_category_screen.dart';
 import '../../upload/models/found_item_model.dart';
 import '../../upload/provider/upload_item_provider.dart';
 import '../widgets/custom_category_title_button.dart';
@@ -62,7 +63,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             .map(
                               (category) => CustomCategoryTitleButton(
                                 category: category,
-                                onTap: () {},
+                                onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ItemCategoryScreen(category: category),
+                                  ),
+                                ),
                               ),
                             )
                             .toList(),

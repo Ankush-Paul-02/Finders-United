@@ -18,7 +18,6 @@ class BookmarkScreen extends StatefulWidget {
 class _BookmarkScreenState extends State<BookmarkScreen> {
   @override
   Widget build(BuildContext context) {
-    final itemProvider = Provider.of<UploadItemProvider>(context);
     return Consumer<AuthProvider>(
       builder: (context, provider, child) => FutureBuilder(
         future: provider.getUserData(provider.user.uid),

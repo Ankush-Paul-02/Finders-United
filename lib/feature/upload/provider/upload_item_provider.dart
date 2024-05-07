@@ -135,6 +135,43 @@ class UploadItemProvider extends ChangeNotifier {
     }
   }
 
+  Future<List<FoundItemModel>> getItemByCategory(
+    String category,
+    BuildContext context,
+  ) async {
+    try {
+      CollectionReference reference =
+          _firestore.collection(DatabaseConstants.foundItemsFirestore);
+      QuerySnapshot snapshot = await reference.get();
+
+      List<FoundItemModel> foundItems = snapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return FoundItemModel(
+          id: data['id'],
+          name: data['name'],
+          description: data['description'],
+          location: data['location'],
+          date: data['date'],
+          category: data['category'],
+          imageUrl: data['imageUrl'],
+          founderId: data['founderId'],
+          founderName: data['founderName'],
+          founderContact: data['founderContact'],
+          claimableIds: List<String>.from(data['claimableIds']),
+          isClaimed: data['isClaimed'],
+          createdAt: DateTime.fromMillisecondsSinceEpoch(data['createdAt']),
+          claimerPersonId: data['claimerPersonId'],
+        );
+      }).toList();
+      foundItems =
+          foundItems.where((item) => item.category == category).toList();
+      return foundItems;
+    } on FirebaseException catch (e) {
+      showSnackBar(context, 'Error retrieving recent found items');
+      return [];
+    }
+  }
+
   /// GET ITEM
   Future<FoundItemModel?> getItem(String itemId) async {
     try {
