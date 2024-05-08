@@ -14,7 +14,7 @@ import '../../../core/common/custom_text_field.dart';
 import '../../../core/common/gradient_button.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/utils/show_snack_bar.dart';
-import '../provider/upload_item_provider.dart';
+import '../../providers/item_provider.dart';
 
 class FoundItemUploadScreen extends StatefulWidget {
   const FoundItemUploadScreen({super.key});

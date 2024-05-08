@@ -6,7 +6,7 @@ import 'package:velocity_x/velocity_x.dart';
 
 import '../../../core/common/gradient_button.dart';
 import '../../../core/constants/app_constants.dart';
-import '../providers/auth_provider.dart';
+import '../../providers/auth_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

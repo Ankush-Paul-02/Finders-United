@@ -4,10 +4,10 @@ import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../core/constants/app_constants.dart';
-import '../../auth/providers/auth_provider.dart';
 import '../../item/screens/item_category_screen.dart';
+import '../../providers/auth_provider.dart';
+import '../../providers/item_provider.dart';
 import '../../upload/models/found_item_model.dart';
-import '../../upload/provider/upload_item_provider.dart';
 import '../widgets/custom_category_title_button.dart';
 import '../widgets/home_header.dart';
 import '../widgets/recent_post_card.dart';

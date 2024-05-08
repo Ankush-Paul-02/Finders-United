@@ -4,11 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import 'feature/auth/providers/auth_provider.dart';
 import 'feature/auth/screens/login_screen.dart';
-import 'feature/home/provider/bottom_nav_bar_provider.dart';
+import 'feature/providers/auth_provider.dart';
+import 'feature/providers/bottom_nav_bar_provider.dart';
+import 'feature/providers/item_provider.dart';
 import 'feature/splash/screens/splash_screen.dart';
-import 'feature/upload/provider/upload_item_provider.dart';
 import 'firebase_options.dart';
 
 void main() async {

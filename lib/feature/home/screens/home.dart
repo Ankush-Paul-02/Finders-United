@@ -5,8 +5,8 @@ import 'package:sizer/sizer.dart';
 
 import '../../chat/screens/chat_screen.dart';
 import '../../profile/screens/profile_screen.dart';
+import '../../providers/bottom_nav_bar_provider.dart';
 import '../../upload/screens/found_item_upload_screen.dart';
-import '../provider/bottom_nav_bar_provider.dart';
 import 'home_screen.dart';
 
 class Home extends StatefulWidget {

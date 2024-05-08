@@ -5,12 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/database_constants.dart';
-import '../../../core/utils/show_snack_bar.dart';
-import '../../home/screens/home.dart';
-import '../models/user_model.dart';
-import '../screens/login_screen.dart';
-import '../screens/otp_screen.dart';
+import '../../core/constants/database_constants.dart';
+import '../../core/utils/show_snack_bar.dart';
+import '../home/screens/home.dart';
+import '../auth/models/user_model.dart';
+import '../auth/screens/login_screen.dart';
+import '../auth/screens/otp_screen.dart';
 
 class AuthProvider with ChangeNotifier {
   final _firebaseAuth = FirebaseAuth.instance;

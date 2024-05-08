@@ -6,7 +6,7 @@ import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../core/constants/app_constants.dart';
-import '../providers/auth_provider.dart';
+import '../../providers/auth_provider.dart';
 
 class OTPScreen extends StatefulWidget {
   final String phoneNumber;

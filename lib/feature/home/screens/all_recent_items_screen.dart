@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../providers/item_provider.dart';
 import '../../upload/models/found_item_model.dart';
-import '../../upload/provider/upload_item_provider.dart';
 import '../widgets/recent_post_card.dart';
 
 class AllRecentItemsScreen extends StatefulWidget {

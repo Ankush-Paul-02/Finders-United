@@ -10,7 +10,7 @@ import '../../../core/common/gradient_button.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../auth/models/user_model.dart';
-import '../../auth/providers/auth_provider.dart';
+import '../../providers/auth_provider.dart';
 import '../widgets/profile_text_field.dart';
 
 class ProfileScreen extends StatefulWidget {

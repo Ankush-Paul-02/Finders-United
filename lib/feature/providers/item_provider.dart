@@ -6,10 +6,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../core/constants/database_constants.dart';
-import '../../../core/utils/show_snack_bar.dart';
-import '../../auth/models/user_model.dart';
-import '../models/found_item_model.dart';
+import '../../core/constants/database_constants.dart';
+import '../../core/utils/show_snack_bar.dart';
+import '../auth/models/user_model.dart';
+import '../upload/models/found_item_model.dart';
 
 class UploadItemProvider extends ChangeNotifier {
   final _firebaseAuth = FirebaseAuth.instance;
