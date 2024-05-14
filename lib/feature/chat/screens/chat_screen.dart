@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../../core/common/custom_send_message_text_field.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/chat_provider.dart';
 
@@ -52,11 +53,12 @@ class _ChatScreenState extends State<ChatScreen> {
 
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: PreferredSize(
           preferredSize: Size(double.infinity, 7.h),
           child: AppBar(
-            backgroundColor: Colors.white,
             elevation: 0,
+            iconTheme: const IconThemeData(color: Colors.black),
             title: Row(
               children: [
                 CircleAvatar(
@@ -64,7 +66,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   backgroundImage: NetworkImage(widget.receiverImageUrl),
                 ),
                 3.w.widthBox,
-                widget.receiverName.text.make(),
+                widget.receiverName.text.black.make(),
               ],
             ),
           ),
@@ -121,17 +123,32 @@ class _ChatScreenState extends State<ChatScreen> {
     return Row(
       children: [
         Expanded(
-          child: VxTextField(
+          child: CustomSendMessageTextField(
             controller: _messageController,
-            hint: 'Enter message...',
+            hintText: 'Write your queries...',
+            maxLines: 1,
+            textInputType: TextInputType.text,
           ),
         ),
         IconButton(
           onPressed: () {
             sendMessage(
-                chatProvider, widget.receiverId, _messageController.text);
+              chatProvider,
+              widget.receiverId,
+              _messageController.text.trim(),
+            );
           },
-          icon: const Icon(Icons.send),
+          icon: Container(
+            padding: EdgeInsets.all(3.w),
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.cyan,
+            ),
+            child: const Icon(
+              Icons.send,
+              color: Colors.white,
+            ),
+          ),
         ),
       ],
     );
@@ -142,16 +159,38 @@ class _ChatScreenState extends State<ChatScreen> {
     AuthProvider authProvider,
   ) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-    var alignment = (data['senderId'] == authProvider.user.uid)
+    final alignment = (data['senderId'] == authProvider.user.uid)
         ? Alignment.centerRight
         : Alignment.centerLeft;
+    final isSender = (data['senderId'] == authProvider.user.uid) ? true : false;
     return Container(
       alignment: alignment,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(data['senderPhoneNumber']),
-          Text(data['message']),
+          Container(
+            margin: EdgeInsets.only(bottom: 5.w),
+            padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.h),
+            decoration: BoxDecoration(
+              color: isSender ? Colors.cyan : Colors.grey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: isSender ? Colors.cyan.shade100 : Colors.grey.shade100,
+                  offset: const Offset(1, 2),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                ),
+              ],
+            ),
+            child: Text(
+              data['message'],
+              style: TextStyle(
+                fontSize: 16,
+                color: isSender ? Colors.white : Colors.black,
+              ),
+            ),
+          ),
         ],
       ),
     );

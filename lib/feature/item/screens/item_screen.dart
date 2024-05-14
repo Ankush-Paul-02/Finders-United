@@ -1,4 +1,3 @@
-import 'package:finders_united/feature/providers/item_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -6,6 +5,8 @@ import 'package:velocity_x/velocity_x.dart';
 
 import '../../../core/common/common_row_item_info.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/chat_provider.dart';
+import '../../providers/item_provider.dart';
 import '../../upload/models/found_item_model.dart';
 
 class ItemScreen extends StatefulWidget {
@@ -28,6 +29,7 @@ class _ItemScreenState extends State<ItemScreen> {
   @override
   Widget build(BuildContext context) {
     final itemProvider = Provider.of<UploadItemProvider>(context, listen: true);
+    final chatProvider = Provider.of<ChatProvider>(context, listen: true);
     return SafeArea(
       child: Consumer<AuthProvider>(
         builder: (context, authProvider, child) => FutureBuilder(
@@ -170,35 +172,40 @@ class _ItemScreenState extends State<ItemScreen> {
                           );
                           authProvider.isItemBookmarked;
                         },
-                        child: Container(
-                          height: 7.h,
-                          width: 7.h,
-                          decoration: user.bookmarkItems.contains(widget.postId)
-                              ? BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Colors.cyan.shade100,
-                                      Colors.cyan,
-                                    ],
-                                  ),
-                                )
-                              : BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white,
-                                  border: Border.all(
-                                    color: Colors.cyan,
-                                  ),
+                        child: widget.foundItemModel.founderId !=
+                                authProvider.user.uid
+                            ? Container(
+                                height: 7.h,
+                                width: 7.h,
+                                decoration: user.bookmarkItems
+                                        .contains(widget.postId)
+                                    ? BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        gradient: LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: [
+                                            Colors.cyan.shade100,
+                                            Colors.cyan,
+                                          ],
+                                        ),
+                                      )
+                                    : BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.white,
+                                        border: Border.all(
+                                          color: Colors.cyan,
+                                        ),
+                                      ),
+                                child: Icon(
+                                  Icons.bookmark,
+                                  color:
+                                      user.bookmarkItems.contains(widget.postId)
+                                          ? Colors.white
+                                          : Colors.cyan,
                                 ),
-                          child: Icon(
-                            Icons.bookmark,
-                            color: user.bookmarkItems.contains(widget.postId)
-                                ? Colors.white
-                                : Colors.cyan,
-                          ),
-                        ),
+                              )
+                            : Container(),
                       ),
                       Expanded(
                         child: GestureDetector(
@@ -225,45 +232,51 @@ class _ItemScreenState extends State<ItemScreen> {
                                 } else if (snapshot.hasError) {
                                   return 'Error'.text.makeCentered();
                                 } else {
-                                  return Container(
-                                    height: 7.h,
-                                    margin: const EdgeInsets.only(left: 20),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      gradient: snapshot.data!.claimableIds
-                                              .contains(user.id)
-                                          ? const LinearGradient(
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                              colors: [
-                                                Colors.red,
-                                                Colors.white
-                                              ],
-                                            )
-                                          : const LinearGradient(
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                              colors: [
-                                                Colors.black,
-                                                Colors.grey,
-                                              ],
-                                            ),
-                                    ),
-                                    child: snapshot.data!.claimableIds
-                                            .contains(user.id)
-                                        ? 'Withdraw Request'
-                                            .text
-                                            .white
-                                            .bold
-                                            .size(18)
-                                            .makeCentered()
-                                        : 'Claim Request'
-                                            .text
-                                            .white
-                                            .bold
-                                            .size(18)
-                                            .makeCentered(),
-                                  );
+                                  return widget.foundItemModel.founderId !=
+                                          authProvider.user.uid
+                                      ? Container(
+                                          height: 7.h,
+                                          margin:
+                                              const EdgeInsets.only(left: 20),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            gradient: snapshot
+                                                    .data!.claimableIds
+                                                    .contains(user.id)
+                                                ? const LinearGradient(
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                    colors: [
+                                                      Colors.red,
+                                                      Colors.white
+                                                    ],
+                                                  )
+                                                : const LinearGradient(
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                    colors: [
+                                                      Colors.black,
+                                                      Colors.grey,
+                                                    ],
+                                                  ),
+                                          ),
+                                          child: snapshot.data!.claimableIds
+                                                  .contains(user.id)
+                                              ? 'Withdraw Request'
+                                                  .text
+                                                  .white
+                                                  .bold
+                                                  .size(18)
+                                                  .makeCentered()
+                                              : 'Claim Request'
+                                                  .text
+                                                  .white
+                                                  .bold
+                                                  .size(18)
+                                                  .makeCentered(),
+                                        )
+                                      : Container();
                                 }
                               },
                             ),

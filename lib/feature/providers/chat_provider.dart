@@ -41,6 +41,7 @@ class ChatProvider extends ChangeNotifier {
         .doc(chatRoomId)
         .collection(DatabaseConstants.chatRoomFirestoreMessages)
         .add(newMessage.toMap());
+    debugPrint('Message sent successfully!');
   }
 
   /// GET MESSAGES
