@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 
 import '../../core/constants/database_constants.dart';
 import '../../core/utils/show_snack_bar.dart';
-import '../home/screens/home.dart';
-import '../auth/models/user_model.dart';
 import '../auth/screens/login_screen.dart';
 import '../auth/screens/otp_screen.dart';
+import '../home/screens/home.dart';
+import '../models/user_model.dart';
 
 class AuthProvider with ChangeNotifier {
   final _firebaseAuth = FirebaseAuth.instance;
@@ -29,6 +29,30 @@ class AuthProvider with ChangeNotifier {
 
   /// GET USER WHEN USER IS LOGGED IN
   User get user => _firebaseAuth.currentUser!;
+
+  /// GET USERS STREAM EXCEPT THE CURRENT USER
+  Stream<List<UserModel>> getUsersStream(
+    BuildContext context,
+  ) {
+    return _firestore
+        .collection(DatabaseConstants.userFirestore)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) {
+            final user = doc.data();
+            return UserModel(
+              id: user['id'],
+              name: user['name'],
+              phone: user['phone'],
+              imageUrl: user['imageUrl'],
+              bookmarkItems: List<String>.from(user['bookmarkItems']),
+            );
+          })
+          .where((currentUser) => currentUser.id != user.uid)
+          .toList();
+    });
+  }
 
   /// GET USER DATA
   Future<UserModel?> getUserData(String userId) async {

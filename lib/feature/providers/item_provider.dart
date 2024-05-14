@@ -8,7 +8,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../core/constants/database_constants.dart';
 import '../../core/utils/show_snack_bar.dart';
-import '../auth/models/user_model.dart';
+import '../models/user_model.dart';
 import '../upload/models/found_item_model.dart';
 
 class UploadItemProvider extends ChangeNotifier {
@@ -167,13 +167,15 @@ class UploadItemProvider extends ChangeNotifier {
           foundItems.where((item) => item.category == category).toList();
       return foundItems;
     } on FirebaseException catch (e) {
-      showSnackBar(context, 'Error retrieving recent found items');
+      showSnackBar(context, 'Error retrieving recent found items!');
       return [];
     }
   }
 
   /// GET ITEM
-  Future<FoundItemModel?> getItem(String itemId) async {
+  Future<FoundItemModel?> getItem(
+    String itemId,
+  ) async {
     try {
       DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore
           .collection(DatabaseConstants.foundItemsFirestore)

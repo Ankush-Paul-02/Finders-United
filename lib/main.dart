@@ -7,6 +7,7 @@ import 'package:sizer/sizer.dart';
 import 'feature/auth/screens/login_screen.dart';
 import 'feature/providers/auth_provider.dart';
 import 'feature/providers/bottom_nav_bar_provider.dart';
+import 'feature/providers/chat_provider.dart';
 import 'feature/providers/item_provider.dart';
 import 'feature/splash/screens/splash_screen.dart';
 import 'firebase_options.dart';
@@ -35,6 +36,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (context) => UploadItemProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => ChatProvider(),
           ),
         ],
         child: MaterialApp(

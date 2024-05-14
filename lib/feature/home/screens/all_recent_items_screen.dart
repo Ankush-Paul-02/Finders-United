@@ -52,12 +52,10 @@ class _AllRecentItemsScreenState extends State<AllRecentItemsScreen> {
                     ),
                     itemCount: recentItems.length,
                     itemBuilder: (context, index) {
-                      return Expanded(
-                        child: RecentPostCard(
-                          postId: recentItems[index].id,
-                          imageUrl: recentItems[index].imageUrl,
-                          foundItemModel: recentItems[index],
-                        ),
+                      return RecentPostCard(
+                        postId: recentItems[index].id,
+                        imageUrl: recentItems[index].imageUrl,
+                        foundItemModel: recentItems[index],
                       );
                     },
                   );

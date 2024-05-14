@@ -6,4 +6,8 @@ class DatabaseConstants {
   /// ITEM
   static String foundImagesStorage = "found_item_images";
   static String foundItemsFirestore = "found-items";
+
+  /// CHAT ROOM
+  static String chatRoomFirestore = "chat_rooms";
+  static String chatRoomFirestoreMessages = "messages";
 }
