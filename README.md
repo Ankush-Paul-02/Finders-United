@@ -29,7 +29,7 @@ An app where users can report lost items and help others find them. The app uses
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/your-repo/finders-united.git
+   git clone [https://github.com/your-repo/finders-united.git](https://github.com/Ankush-Paul-02/Finders-United.git)
    cd finders-united
    ```
 
