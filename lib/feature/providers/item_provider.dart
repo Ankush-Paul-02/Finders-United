@@ -8,8 +8,8 @@ import 'package:uuid/uuid.dart';
 
 import '../../core/constants/database_constants.dart';
 import '../../core/utils/show_snack_bar.dart';
+import '../models/found_item_model.dart';
 import '../models/user_model.dart';
-import '../upload/models/found_item_model.dart';
 
 class UploadItemProvider extends ChangeNotifier {
   final _firebaseAuth = FirebaseAuth.instance;
@@ -89,7 +89,7 @@ class UploadItemProvider extends ChangeNotifier {
           .set(foundItemModel.toMap());
       showSnackBar(context, 'Item uploaded successfully.');
       return true;
-    } on FirebaseException catch (e) {
+    } on FirebaseException {
       showSnackBar(context, 'Failed to upload the item!');
       return false;
     } finally {
@@ -105,7 +105,8 @@ class UploadItemProvider extends ChangeNotifier {
       // _setLoading(true);
       CollectionReference reference =
           _firestore.collection(DatabaseConstants.foundItemsFirestore);
-      QuerySnapshot snapshot = await reference.get();
+      QuerySnapshot snapshot =
+          await reference.orderBy('createdAt', descending: true).get();
 
       List<FoundItemModel> foundItems = snapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -127,7 +128,7 @@ class UploadItemProvider extends ChangeNotifier {
         );
       }).toList();
       return foundItems;
-    } on FirebaseException catch (e) {
+    } on FirebaseException {
       showSnackBar(context, 'Error retrieving recent found items');
       return [];
     } finally {
@@ -166,7 +167,7 @@ class UploadItemProvider extends ChangeNotifier {
       foundItems =
           foundItems.where((item) => item.category == category).toList();
       return foundItems;
-    } on FirebaseException catch (e) {
+    } on FirebaseException {
       showSnackBar(context, 'Error retrieving recent found items!');
       return [];
     }
@@ -227,7 +228,7 @@ class UploadItemProvider extends ChangeNotifier {
       } else {
         showSnackBar(context, 'Item does not exist.');
       }
-    } on FirebaseException catch (e) {
+    } on FirebaseException {
       showSnackBar(context, 'Something went wrong!');
     }
   }

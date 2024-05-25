@@ -4,10 +4,10 @@ import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../core/common/common_row_item_info.dart';
+import '../../models/found_item_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/chat_provider.dart';
 import '../../providers/item_provider.dart';
-import '../../upload/models/found_item_model.dart';
 
 class ItemScreen extends StatefulWidget {
   final String postId;

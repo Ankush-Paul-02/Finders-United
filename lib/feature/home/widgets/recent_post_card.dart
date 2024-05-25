@@ -3,7 +3,7 @@ import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../item/screens/item_screen.dart';
-import '../../upload/models/found_item_model.dart';
+import '../../models/found_item_model.dart';
 
 class RecentPostCard extends StatelessWidget {
   final String postId;

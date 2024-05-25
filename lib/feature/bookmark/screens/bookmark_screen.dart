@@ -4,9 +4,9 @@ import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../home/widgets/recent_post_card.dart';
+import '../../models/found_item_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/item_provider.dart';
-import '../../upload/models/found_item_model.dart';
 
 class BookmarkScreen extends StatefulWidget {
   const BookmarkScreen({super.key});
