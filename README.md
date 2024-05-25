@@ -203,6 +203,51 @@ service firebase.storage {
 }
 ```
 
+### App Screenshots
+Here are some screenshots of the Finders United app:
+
+### Splash Screen
+
+![splash_screen](https://github.com/Ankush-Paul-02/Finders-United/assets/119006401/775074e0-d4b2-4d2f-b47b-48c35f3e0f7c)
+
+### Login Screen
+
+![login_screen](https://github.com/Ankush-Paul-02/Finders-United/assets/119006401/eedc9801-3401-485f-bd2e-f4cb884c2a1b)
+
+### OTP Verification Screen
+
+![3](https://github.com/Ankush-Paul-02/Finders-United/assets/119006401/e4d0b8cc-dc40-44d9-b103-9bb3c447e632)
+
+### Home Screen
+
+![home_screen](https://github.com/Ankush-Paul-02/Finders-United/assets/119006401/9dcb8afd-776c-4367-a952-df6e144b5503)
+
+### Found Item Upload Screen
+
+![add_item_screen1](https://github.com/Ankush-Paul-02/Finders-United/assets/119006401/24e27555-17ec-4497-8c42-5ce92d61477e) 
+
+![add_item_screen2](https://github.com/Ankush-Paul-02/Finders-United/assets/119006401/51a41d44-9dc4-43fa-86a1-f9a611a96dcd)
+
+### Recent Items
+
+![all_recent_items_screen](https://github.com/Ankush-Paul-02/Finders-United/assets/119006401/befd38df-9b05-450c-ad3a-b4a641f2616e)
+
+### All Bookmarked Items
+
+![bookmark_screen1](https://github.com/Ankush-Paul-02/Finders-United/assets/119006401/f0b9f9f6-84c9-4b04-b6d8-955a00d456bd)
+
+### Item Screen
+
+![item_screen](https://github.com/Ankush-Paul-02/Finders-United/assets/119006401/3fc1cc68-fd5f-4549-8e45-1116d6392dce)
+
+### Chat Screen
+
+![chat_screen2](https://github.com/Ankush-Paul-02/Finders-United/assets/119006401/96f17b9c-b5d2-43a6-bd4d-121069a5fa17)
+
+### Profile Screen
+
+![profile_screen](https://github.com/Ankush-Paul-02/Finders-United/assets/119006401/28238b43-d340-43a4-999c-9bd6dc302b7f)
+
 ## Usage
 
 1. **Register/Login**: Users can register or log in using their email and password.
